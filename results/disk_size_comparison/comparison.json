@@ -1,0 +1,34 @@
+{
+  "native": {
+    "relative_l2": 0.6719963052498145,
+    "cosine": 0.7454450618421568,
+    "shifted_flux_retained": 0.9989517484774808
+  },
+  "20uas": {
+    "relative_l2": 0.44214338921312624,
+    "cosine": 0.8970965032599855,
+    "shifted_flux_retained": 0.9974702215632811
+  },
+  "alignment_shift_row_col_pixels": [
+    -5,
+    5
+  ],
+  "runs": [
+    {
+      "path": "results/init_disk40",
+      "chi2": [
+        1.114716649055481,
+        0.7854409217834473
+      ],
+      "flux": 0.04163530096411705
+    },
+    {
+      "path": "results/init_disk100_seed1",
+      "chi2": [
+        1.1031049489974976,
+        0.8010315299034119
+      ],
+      "flux": 0.3433830738067627
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+"""Single-frame Stokes I KINE adaptation; closure data terms only."""
+import argparse,json
+from pathlib import Path
+import numpy as np
+import torch
+from Model import KineStatic
+from utils.closure import load_closures,grid,operator,closure_loss
+
+def main():
+    p=argparse.ArgumentParser(__doc__)
+    p.add_argument('--uvfits',default='/home/terakawayui/projects/kine3c345/observations/m87/uvfits/hops_3597_M87_LO.dcal_full.uvfits')
+    for name,default in [('npix',64),('steps',10000),('init-steps',500),('width',256),('depth',4),('degrees',0),('seed',1),('batch',128)]: p.add_argument('--'+name,type=int,default=default)
+    for name,default in [('fov',200.),('flux',0.6),('lr',0.001),('tavg',120.),('syserr',0.01),('center-weight',1.)]: p.add_argument('--'+name,type=float,default=default)
+    p.add_argument('--device',default='cpu');p.add_argument('--out',default='results/kine_static')
+    args=p.parse_args()
+    if args.npix<2 or args.flux<=0 or args.fov<=0 or args.batch<1: p.error('Invalid grid, flux or batch')
+    torch.set_num_threads(4);torch.manual_seed(args.seed)
+    out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
+    xy,coords=grid(args.npix,args.fov)
+    coords=torch.tensor(coords,dtype=torch.float32,device=args.device)
+    products=load_closures(args.uvfits,args.tavg,args.syserr)
+    # Matrices are constructed per minibatch to bound memory.
+    targets=[(torch.tensor(y,dtype=torch.float32,device=args.device),torch.tensor(s,dtype=torch.float32,device=args.device)) for uv,y,s in products]
+    model=KineStatic(args.depth,args.width,args.degrees).to(args.device)
+    opt=torch.optim.Adamax(model.parameters(),lr=args.lr)
+    prior=torch.exp(-coords.square().sum(1)/(2*(60/args.fov*2*np.pi/2.355)**2))
+    prior=prior/prior.sum()*args.flux
+    history=[]
+    for step in range(args.init_steps+args.steps):
+        raw=model(coords);image=raw/raw.sum()*args.flux
+        if step<args.init_steps:
+            loss=((image-prior).square().mean()/prior.square().mean())
+            metrics={'init':float(loss.detach())}
+        else:
+            losses=[]
+            for (uv,y,s),(target,sigma) in zip(products,targets):
+                idx=np.random.default_rng(args.seed+step+len(uv)).choice(len(uv),min(args.batch,len(uv)),replace=False)
+                A=operator(uv[idx],xy,args.device)
+                losses.append(closure_loss(image,A,target[idx],sigma[idx]))
+            center=(image[:,None]*coords).sum(0)/args.flux
+            loss=sum(losses)+args.center_weight*center.square().sum()
+            metrics={'cphase':float(losses[0].detach()),'logcamp':float(losses[1].detach())}
+        if not torch.isfinite(loss): raise RuntimeError('Nonfinite loss')
+        opt.zero_grad();loss.backward();opt.step()
+        if step%100==0 or step==args.init_steps+args.steps-1:
+            print(step,metrics,flush=True);history.append({'step':step,**metrics})
+    # BatchNorm uses full spatial grid statistics, as during fitting.
+    with torch.no_grad():
+        raw=model(coords);image=raw/raw.sum()*args.flux
+        scores=[]
+        for (uv,y,s),(target,sigma) in zip(products,targets):
+            total=0.
+            for start in range(0,len(uv),args.batch):
+                sl=slice(start,start+args.batch)
+                total+=float(closure_loss(image,operator(uv[sl],xy,args.device),target[sl],sigma[sl]))*len(uv[sl])
+            scores.append(total/len(uv))
+    arr=image.cpu().numpy().reshape(args.npix,args.npix)
+    np.save(out/'image.npy',arr)
+    torch.save({'model':model.state_dict(),'config':vars(args)},out/'model.pt')
+    (out/'metrics.json').write_text(json.dumps({'config':vars(args),'counts':[len(x[0]) for x in products],'full_chi2':scores,'history':history},indent=2))
+    import matplotlib;matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    plt.imshow(arr,origin='lower',extent=[-args.fov/2,args.fov/2,-args.fov/2,args.fov/2],cmap='inferno')
+    plt.xlabel('l (uas)');plt.ylabel('m (uas)');plt.colorbar(label='Jy / pixel');plt.savefig(out/'image.png',dpi=180);plt.close()
+    print('Full closure chi2:',scores)
+if __name__=='__main__': main()

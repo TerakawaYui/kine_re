@@ -1,0 +1,21 @@
+{
+  "same_weight_forward_max_abs": 6.51925802230835e-08,
+  "all_parameter_gradient_relative_l2": 3.3016976885846816e-06,
+  "adamax_20_steps_max_abs": 4.172325134277344e-07,
+  "torch_parameter": [
+    0.8823230862617493,
+    2.00614333152771,
+    2.9999911785125732
+  ],
+  "optax_parameter": [
+    0.8823235034942627,
+    2.00614333152771,
+    2.9999911785125732
+  ],
+  "versions": {
+    "torch": "2.14.1+cu130",
+    "jax": "0.10.2",
+    "optax": "0.2.8"
+  },
+  "note": "Current available library versions; original repository does not pin these versions."
+}

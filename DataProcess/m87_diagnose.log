@@ -1,0 +1,76 @@
+/home/terakawayui/projects/kine_Re/.venv/lib/python3.11/site-packages/ehtim/io/load.py:1421: RuntimeWarning: invalid value encountered in divide
+  ll = (np.nansum(np.nansum(ll_2d * llweight, axis=2), axis=1) /
+/home/terakawayui/projects/kine_Re/.venv/lib/python3.11/site-packages/ehtim/io/load.py:1423: RuntimeWarning: invalid value encountered in divide
+  rl = (np.nansum(np.nansum(rl_2d * rlweight, axis=2), axis=1) /
+/home/terakawayui/projects/kine_Re/.venv/lib/python3.11/site-packages/ehtim/io/load.py:1425: RuntimeWarning: invalid value encountered in divide
+  lr = (np.nansum(np.nansum(lr_2d * lrweight, axis=2), axis=1) /
+Warning: No NFFT installed!
+Welcome to eht-imaging!
+
+Loading uvfits:  /home/terakawayui/projects/kine3c345/observations/m87/uvfits/hops_3597_M87_LO.dcal_full.uvfits
+no IF in uvfits header!
+POLREP_UVFITS: circ
+Number of uvfits Correlation Products: 4
+Warning: removing flagged data present!
+short baseline weight fraction 0.06698797884611404
+U-V flagged 57/616 visibilities
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Initializing imager data products . . .
+==============================
+Imager run 1 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 6.056063 s
+J: 60.628099
+chi2_amp : 54.79 chi2_cphase : 5.49 chi2_logcamp : 1.55 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+==============================
+Imager run 2 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 6.378989 s
+J: 55.734623
+chi2_amp : 48.24 chi2_cphase : 9.13 chi2_logcamp : 1.09 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+==============================
+Imager run 3 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 5.831355 s
+J: 44.115118
+chi2_amp : 39.61 chi2_cphase : 4.75 chi2_logcamp : 1.06 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+{'cphase': 4.747298737080961, 'logcamp': 1.0610925678526197, 'prior_fwhm_uas': 40}
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Initializing imager data products . . .
+==============================
+Imager run 1 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 6.274334 s
+J: 36.898407
+chi2_amp : 34.71 chi2_cphase : 2.53 chi2_logcamp : 1.12 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+==============================
+Imager run 2 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 6.215304 s
+J: 32.322081
+chi2_amp : 31.89 chi2_cphase : 2.11 chi2_logcamp : 1.03 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+==============================
+Imager run 3 
+Warning! Specified flux 0.6 is > 120% of maximum visibility amplitude for freq 227.1 GHz!
+Imaging . . .
+time: 6.073226 s
+J: 30.845792
+chi2_amp : 31.04 chi2_cphase : 1.74 chi2_logcamp : 0.91 
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+==============================
+{'cphase': 1.7356933480234071, 'logcamp': 0.9065947501978523, 'prior_fwhm_uas': 60}

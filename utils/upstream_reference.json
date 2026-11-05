@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/mariannafoschi/kine3c345",
+  "local_source": "/home/terakawayui/projects/kine3c345",
+  "sha256": {
+    "code/kine/model.py": "5edc27f30c9bcc82dc8dcd9f6512ab07d70a1b5110f14b25aa2d5e071cd9d27c",
+    "code/kine/training.py": "d102752edfe5222518afa44d9f55554cbc279a1bfa8b9056b97b4c4fa3f040ce",
+    "code/kine/helpers.py": "ee0cec5c52756796d1f1b40ee0b96fa3b7fa017972d3d18510c5f1db3e01c790",
+    "code/kine/kine.py": "ff1101c1d8bdda1e210206e6d3fa9e313216ca48f2206e13cc7ca66fb4f30aa2",
+    "code/params/params_closure_m87.yml": "e4065e72ec64e1a4d6b0d3b0b24cf35e9ba582dab061b3e88abbdebb74f1d0b0"
+  }
+}
